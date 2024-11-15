@@ -1,0 +1,57 @@
+System Architecture
+1. AR glasses: display augmented frames
+2. Fixed camera: capture the surgical area
+3. Local backend server: process frames and generate overalys
+4. Network: transmit the data between each component
+
+Setup Steps:
+1. create local server (flask) to handle incoming video frames and generate overalys
+2. python script to run on device connected to fixed camera to capture frames and send to backend (same computer)
+3. some ar glasses have specific sdk and dev tools
+
+-- All notes below taken from: https://dataheadhunters.com/academy/how-to-use-python-for-augmented-reality-projects-step-by-step/ --
+
+Details:
+- opencv for cv and image processing
+    - marker based AR -- use markers to trigger appearance of the virtual objects -- can be detected with opencv
+
+Key functions:
+- detect and track image markers
+    - opencv and artoolkit provide marker and feature detection 
+- estimate marker pose
+    - estimate the 3d position and orientation of the marker in the real world to render the virtual objects as if they are real 
+    - opencv has methods for this
+- render virtual objects
+    - overaly 3d virtual objects/models over the marker 
+        - can use OpenGL or other 3d rendering modules
+
+Capture video for augmentation
+    - cap = cv2.VideoCapture(0)
+    - set frame w and h
+
+Detect markers
+    - use opencv's detectMarkers() function
+
+Overlay 3d models:
+    - imgAug = overlayTransparent(img, augmentedImg, x, y)
+
+Distance estimation:
+    - use marker size/position to estimate dist
+        - distance = calculateDistance(markerWidth, focalLength, perWidth) 
+
+Useful links:
+    - https://github.com/mikeroyal/AR-VR-Guide 
+
+Display on AR glasses:
+    - work with specific SDK for AR glasses manufacturer
+    - recieve overlay data from our backend server
+    - convert into an image format compatible with AR glasses
+    - use AR glass sdk to display the image in users fov
+
+Microsoft HoloLens - might use the mixed reality toolkit and Unity 
+    - https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/mrtk3-overview/
+
+    - deploy to device connected via USB
+
+From python to a unity app?
+    - https://stackoverflow.com/questions/73365516/what-method-for-live-sending-python-numpy-data-to-unity-3d
